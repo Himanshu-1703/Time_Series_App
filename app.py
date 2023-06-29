@@ -139,7 +139,7 @@ elif analysis == 'Predictive Analysis':
         
         st.subheader('Prediction Plot')
         
-        image = 'D:\Web-Applications\Oil well\prediction copy.png'
+        image = 'prediction copy.png'
         image_file = Image.open(image)
         
         st.image(image=image_file,width=800)
