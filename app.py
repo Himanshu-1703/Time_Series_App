@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 from PIL import Image
+from plotter import comp_plots,time_series_plot
 
 # make the dataframe
 df = pd.read_csv('cleaned_data.csv')
@@ -30,48 +31,30 @@ if analysis == 'Descriptive Analysis':
     desc_btn = st.sidebar.button(label='Press for Analysis')
     if desc_btn:
         
-        # plot the trend plot
-        # filter the df
         if year == 'All':
-            col1,col2 = st.columns(2)
             st.subheader('Sample of Data')
-            # print a few columns of the dataframe
+            # print a few rows of the dataframe
             st.dataframe(df.iloc[:,0:-2].sample(10),width=1500)
             
+            # plot the plots for the complete data
             st.subheader('Plots')
-            fig1,ax1 = plt.subplots(figsize=(12,7))
-            df[df.columns[0]].plot(ax=ax1,)
-            plt.title(f'Analysis plot for {df.columns[0]}',fontdict={'size':20})
-            ax1.set_ylabel('Oil Volume(m^3/day)',fontdict={'size':20})
-            plt.xticks(rotation=60)
-            plt.tight_layout()
+            
+            # plot the time series plots
+            fig1,fig2 = time_series_plot(data_frame=df,year=year)
+            
+            #plot the graph for oil volume
             st.pyplot(fig1)
             
-
-            fig2,ax2 = plt.subplots(figsize=(12,7))
-            df[df.columns[7]].plot(ax=ax2)
-            plt.title(f'Analysis plot for {df.columns[7]}',fontdict={'size':20})
-            ax2.set_ylabel('Reservoir Pressure(atm)',fontdict={'size':20})
-            plt.xticks(rotation=60)
-            plt.tight_layout()
+            # plot the graph for reservoir pressure
             st.pyplot(fig2)
             
-            fig3,ax3 = plt.subplots(figsize=(12,7))
-            df[['oil_volume','volume_of_liquid', 'water_volume']].plot(ax=ax3)
-            plt.title(f'Analysis plot for year {year}',fontdict={'size':20})
-            ax3.set_ylabel('Volume(m^3/day)',fontdict={'size':20})
-            plt.legend(prop={'size':15})
-            plt.xticks(rotation=60)
-            plt.tight_layout()
+            # plot the comparison plots
+            fig3,fig4 = comp_plots(data_frame=df,year=year)
+            
+            # plot the comparison graphs for liquids
             st.pyplot(fig3)
             
-            fig4,ax4 = plt.subplots(figsize=(12,7))
-            df[['working_hours']].plot(ax=ax4)
-            plt.title(f'Analysis plot for year {year}',fontdict={'size':20})
-            ax4.set_ylabel('No. of Hours',fontdict={'size':20})
-            plt.legend(prop={'size':15})
-            plt.xticks(rotation=60)
-            plt.tight_layout()
+            # plot the comparison graphs for working hours
             st.pyplot(fig4)
                 
         else:
@@ -82,41 +65,24 @@ if analysis == 'Descriptive Analysis':
             
             st.subheader('Plots')
             
-            fig1,ax1 = plt.subplots(figsize=(12,7))
-            filt_year[df.columns[0]].plot(ax=ax1,)
-            plt.title(f'Analysis plot for {df.columns[0]} for year {year}',fontdict={'size':20})
-            ax1.set_ylabel('Oil Volume(m^3/day)',fontdict={'size':20})
-            plt.xticks(rotation=60)
-            plt.tight_layout()
+            # plot the time series plots
+            fig1,fig2 = time_series_plot(data_frame=filt_year,year=year)
+            
+            #plot the graph for oil volume
             st.pyplot(fig1)
             
-    
-            fig2,ax2 = plt.subplots(figsize=(12,7))
-            filt_year[df.columns[7]].plot(ax=ax2)
-            plt.title(f'Analysis plot for {df.columns[7]} for year {year}',fontdict={'size':20})
-            ax2.set_ylabel('Reservoir Pressure(atm)',fontdict={'size':20})
-            plt.xticks(rotation=60)
-            plt.tight_layout()
+            # plot the graph for reservoir pressure
             st.pyplot(fig2)
             
+            # plot the comparison plots
+            fig3,fig4 = comp_plots(data_frame=filt_year,year=year)
             
-            fig3,ax3 = plt.subplots(figsize=(12,7))
-            filt_year[['oil_volume','volume_of_liquid', 'water_volume']].plot(ax=ax3)
-            plt.title(f'Analysis plot for year {year}',fontdict={'size':20})
-            ax3.set_ylabel('Volume(m^3/day)',fontdict={'size':20})
-            plt.legend(prop={'size':15})
-            plt.xticks(rotation=60)
-            plt.tight_layout()
+            # plot the comparison graphs for liquids
             st.pyplot(fig3)
             
-            fig4,ax4 = plt.subplots(figsize=(12,7))
-            filt_year[['working_hours']].plot(ax=ax4)
-            plt.title(f'Analysis plot for year {year}',fontdict={'size':20})
-            ax4.set_ylabel('No. of Hours',fontdict={'size':20})
-            plt.legend(prop={'size':15})
-            plt.xticks(rotation=60)
-            plt.tight_layout()
+            # plot the comparison graphs for working hours
             st.pyplot(fig4)
+         
             
     
 elif analysis == 'Predictive Analysis':
